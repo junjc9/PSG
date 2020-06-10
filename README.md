@@ -151,7 +151,7 @@ python train.py
   </tr>
 </table>
 
-## Evaluation
+## 性能评估
 
 ### evaluation/eval_on_val_for_metrics.py:
 
@@ -165,11 +165,11 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple cityscapesScripts
 
 - ![](docs/img/path.png)
 
-- <details>
-<summary>或者在cmd(<kbd>win + r</kbd> -> cmd)中键入如下命令(自行修改)</summary>
-<code>set CITYSCAPES_RESULTS=%CITYSCAPES_RESULTS%;D:\PSG\training_logs\val_result</code>
-<code>set CITYSCAPES_DATASET=%CITYSCAPES_DATASET%;D:\PSG\data\cityscapes</code>
-</details>
+- 或者在cmd(<kbd>win + r</kbd> -> cmd)中键入如下命令(自行修改)
+```sh
+set CITYSCAPES_RESULTS=%CITYSCAPES_RESULTS%;D:\PSG\training_logs\val_result
+set CITYSCAPES_DATASET=%CITYSCAPES_DATASET%;D:\PSG\data\cityscapes
+```
 
 ```sh
 C:\>csEvalPixelLevelSemanticLabeling.exe
