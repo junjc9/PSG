@@ -32,7 +32,7 @@ class DeepLabV3(nn.Module):
 
         output = self.aspp(feature_map) # (shape: (batch_size, num_classes, h/16, w/16))
 
-        output = F.upsample(output, size=(h, w), mode="bilinear") # (shape: (batch_size, num_classes, h, w))
+        output = F.upsample(output, size=(h, w), mode="bilinear", align_corners=True) # (shape: (batch_size, num_classes, h, w))
 
         return output
 

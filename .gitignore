@@ -22,3 +22,15 @@
 initial_cache.cmake
 
 *.pth
+
+*.pkl
+
+pretrained_models/
+
+training_logs/
+
+__pycache__
+
+data/
+
+*.png

@@ -94,8 +94,8 @@ train_dirs = ["jena/", "zurich/", "weimar/", "ulm/", "tubingen/", "stuttgart/",
 val_dirs = ["frankfurt/", "munster/", "lindau/"]
 test_dirs = ["berlin", "bielefeld", "bonn", "leverkusen", "mainz", "munich"]
 
-cityscapes_data_path = "/root/deeplabv3/data/cityscapes"
-cityscapes_meta_path = "/root/deeplabv3/data/cityscapes/meta"
+cityscapes_data_path = "../data/cityscapes"
+cityscapes_meta_path = "../data/cityscapes/meta"
 
 if not os.path.exists(cityscapes_meta_path):
     os.makedirs(cityscapes_meta_path)
