@@ -51,7 +51,7 @@ trainId_to_id_map_func = np.vectorize(trainId_to_id.get)
 
 batch_size = 2
 
-network = DeepLabV3("eval_val_for_metrics", project_dir="..").cuda()
+network = DeepLabV3("val_result", project_dir="..").cuda()
 network.load_state_dict(torch.load("../pretrained_models/model_13_2_2_2_epoch_580.pth"))
 
 val_dataset = DatasetVal(cityscapes_data_path="../data/cityscapes",

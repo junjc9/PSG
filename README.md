@@ -7,11 +7,13 @@ PyTorch implementation of [DeepLabV3](https://arxiv.org/abs/1706.05587), trained
 
 ## cityscapes
 
->     Cityscapes数据集由戴姆勒股份公司，马克斯普朗克信息学研究所，达姆施塔特工业大学视觉推理实验室等中的人员组成的 Cityscapes 团队于 2016 年发布，相关论文有《The Cityscapes Dataset for Semantic Urban Scene Understanding》数据集包含 50 个不同城市街景中记录的视频序列，其中包含 20000 个弱注释帧和 5000 帧的高质量像素级注释。
+> Cityscapes数据集由戴姆勒股份公司，马克斯普朗克信息学研究所，达姆施塔特工业大学视觉推理实验室等中的人员组成的 Cityscapes 团队于 2016 年发布，相关论文有《The Cityscapes Dataset for Semantic Urban Scene Understanding》数据集包含 50 个不同城市街景中记录的视频序列，其中包含 20000 个弱注释帧和 5000 帧的高质量像素级注释。
 
 - 该数据集专注于对城市街景的语义理解，旨在将评估视觉  算法 用于语义城市场景理解中，该数据集的应用有以下两点：
 	- 像素级和实例级语义标签; 
 	- 大量（弱）注释数据的研究。
+
+![](docs/img/hyperai.png)
 
 ### aria2
 
@@ -19,11 +21,13 @@ PyTorch implementation of [DeepLabV3](https://arxiv.org/abs/1706.05587), trained
 
 - 项目仓库在`https://github.com/aria2/aria2`，在release页下载适用于你系统的最新版，如[aria2-1.35.0-windows-x64](https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0-win-64bit-build1.zip)
 
-- 下载完成后用7-Zip提取到当前位置，复制**aria2c.exe**到项目根目录，<kbd>Shift</kbd>+鼠标右键，`在此处打开Powershell窗口(S)`，粘贴以下命令（感谢数据集做种的网站，虽然100M的光纤我还是下了一整夜）
+- 下载完成后用7-Zip提取到当前位置，在本仓库下新建`data`文件夹，新建复制**aria2c.exe**到`data`z中，<kbd>Shift</kbd>+鼠标右键，`在此处打开Powershell窗口(S)`，粘贴以下命令（感谢数据集做种的网站，虽然100M的光纤我还是下了一整夜）
 
 ```sh
 aria2c.exe -c -j16 -s16 -x16 --follow-torrent=mem -o 'hyperai.torrent' 'https://hyper.ai/tracker/download?torrent=7106'
 ```
+
+- 下载完成后的文件及说明：
 
 | 文件名 | 大小 | 说明 |
 | --- | --- | --- |
@@ -44,26 +48,87 @@ aria2c.exe -c -j16 -s16 -x16 --follow-torrent=mem -o 'hyperai.torrent' 'https://
 | samples_1.png	| 1.61 MB | |
 | samples_2.png	| 1.81 MB | |
 
-- - - Register on the [website](https://www.cityscapes-dataset.com/).
-- - - $ wget --keep-session-cookies --save-cookies=cookies.txt --post-data 'username=XXXXX&password=YYYYY&submit=Login' https://www.cityscapes-dataset.com/login/ *(where you replace XXXXX with your username, and YYYYY with your password)*
-- - - $ wget --load-cookies cookies.txt --content-disposition https://www.cityscapes-dataset.com/file-handling/?packageID=1
-- - - $ wget --load-cookies cookies.txt --content-disposition https://www.cityscapes-dataset.com/file-handling/?packageID=3
+### 预处理
 
-- - - $ unzip gtFine_trainvaltest.zip
-- - - $ unzip leftImg8bit_trainvaltest.zip
+- 用7-Zip把`gtFine_trainvaltest.zip`和`leftImg8bit_trainvaltest.zip`提取到当前位置，再将`leftImg8bit_demoVideo.zip`解压后移至`leftImg8bit`文件夹下，执行如下命令，*(仅需执行一次)*
 
-- - - $ mkdir data
-- - - $ mkdir data/cityscapes
-- - - $ mv gtFine data/cityscapes
-- - - $ mv leftImg8bit data/cityscapes
+```python
+python utils/preprocess_data.py
+```
+- 完成后的`data`目录结构树如下
 
-- - - $ wget --load-cookies cookies.txt --content-disposition https://www.cityscapes-dataset.com/file-handling/?packageID=12
-- - - $ unzip leftImg8bit_demoVideo.zip
-- - - $ mv leftImg8bit/demoVideo data/cityscapes/leftImg8bit
-
-<!-- ## Pretrained model:
-- pretrained_models/model_13_2_2_2_epoch_580.pth:
-- - Trained for 580 epochs on [Cityscapes](https://www.cityscapes-dataset.com/) train and 3333 + 745 images from [Berkeley DeepDrive](http://bdd-data.berkeley.edu/). -->
+```sh
+├─data
+│  └─cityscapes
+│      ├─gtFine
+│      │  ├─test
+│      │  │  ├─berlin
+│      │  │  ├─bielefeld
+│      │  │  ├─bonn
+│      │  │  ├─leverkusen
+│      │  │  ├─mainz
+│      │  │  └─munich
+│      │  ├─train
+│      │  │  ├─aachen
+│      │  │  ├─bochum
+│      │  │  ├─bremen
+│      │  │  ├─cologne
+│      │  │  ├─darmstadt
+│      │  │  ├─dusseldorf
+│      │  │  ├─erfurt
+│      │  │  ├─hamburg
+│      │  │  ├─hanover
+│      │  │  ├─jena
+│      │  │  ├─krefeld
+│      │  │  ├─monchengladbach
+│      │  │  ├─strasbourg
+│      │  │  ├─stuttgart
+│      │  │  ├─tubingen
+│      │  │  ├─ulm
+│      │  │  ├─weimar
+│      │  │  └─zurich
+│      │  └─val
+│      │      ├─frankfurt
+│      │      ├─lindau
+│      │      └─munster
+│      ├─leftImg8bit
+│      │  ├─demoVideo
+│      │  │  ├─stuttgart_00
+│      │  │  ├─stuttgart_01
+│      │  │  └─stuttgart_02
+│      │  ├─test
+│      │  │  ├─berlin
+│      │  │  ├─bielefeld
+│      │  │  ├─bonn
+│      │  │  ├─leverkusen
+│      │  │  ├─mainz
+│      │  │  └─munich
+│      │  ├─train
+│      │  │  ├─aachen
+│      │  │  ├─bochum
+│      │  │  ├─bremen
+│      │  │  ├─cologne
+│      │  │  ├─darmstadt
+│      │  │  ├─dusseldorf
+│      │  │  ├─erfurt
+│      │  │  ├─hamburg
+│      │  │  ├─hanover
+│      │  │  ├─jena
+│      │  │  ├─krefeld
+│      │  │  ├─monchengladbach
+│      │  │  ├─strasbourg
+│      │  │  ├─stuttgart
+│      │  │  ├─tubingen
+│      │  │  ├─ulm
+│      │  │  ├─weimar
+│      │  │  └─zurich
+│      │  └─val
+│      │      ├─frankfurt
+│      │      ├─lindau
+│      │      └─munster
+│      └─meta
+│          └─label_imgs
+```
 
 ## 模型
 
@@ -71,25 +136,40 @@ aria2c.exe -c -j16 -s16 -x16 --follow-torrent=mem -o 'hyperai.torrent' 'https://
 
 ### Train model on Cityscapes:
 
-- $ python utils/preprocess_data.py *(ONLY NEED TO DO THIS ONCE!)*
-- $ python train.py
+```python
+python train.py
+```
 
+<table>
+  <tr>
+    <td vlign="center">
+        <img src="docs/img/epoch_losses_train.png" width="300" alt="">
+    </td>
+    <td vlign="center">
+        <img src="docs/img/epoch_losses_val.png" width="300" alt="">
+    </td>
+  </tr>
+</table>
 
 ## Evaluation
 
 ### evaluation/eval_on_val_for_metrics.py:
 
-- $ python utils/preprocess_data.py *(ONLY NEED TO DO THIS ONCE!)*
 - $ python evaluation/eval_on_val_for_metrics.py 
 
-- $ cd cityscapesScripts
-- $ pip install . *(ONLY NEED TO DO THIS ONCE!)*
-- $ python setup.py build_ext --inplace *(ONLY NEED TO DO THIS ONCE!)* *(this enables cython, which makes the cityscapes evaluation script run A LOT faster)*
-- $ export CITYSCAPES_RESULTS="/root/training_logs/model_eval_val_for_metrics" 
-- $ export CITYSCAPES_DATASET="/root/data/cityscapes" 
-- $ python cityscapesscripts/evaluation/evalPixelLevelSemanticLabeling.py
+```sh
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple cityscapesScripts
+```
 
-- - This will run the pretrained model (set on line 55 in eval_on_val_for_metrics.py) on all images in Cityscapes val, **upsample** the predicted segmentation images to the original Cityscapes image size (1024, 2048), and compute and print performance metrics:
+#### 添加环境变量
+
+- ![](docs/img/path.png)
+
+- <details>
+<summary>或者在cmd(<kbd>win + r</kbd> -> cmd)中键入如下命令(自行修改)</summary>
+<code>set CITYSCAPES_RESULTS=%CITYSCAPES_RESULTS%;D:\PSG\training_logs\val_result</code>
+<code>set CITYSCAPES_DATASET=%CITYSCAPES_DATASET%;D:\PSG\data\cityscapes</code>
+</details>
 
 ```sh
 C:\>csEvalPixelLevelSemanticLabeling.exe
